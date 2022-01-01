@@ -5,14 +5,31 @@
  * then off for one second, repeatedly.
  */
 #include "Arduino.h"
+#include "secrets.h"
+
+#include <WiFi.h>
 
 constexpr auto LED = 4;
 
+
+void init_wifi() {
+	WiFi.mode(WIFI_STA);
+	WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+	Serial.print("Connecting to WiFi ..");
+	while (WiFi.status() != WL_CONNECTED) {
+		Serial.print('.');
+		delay(1000);
+	}
+	Serial.println(WiFi.localIP());
+}
 
 void setup()
 {
 	// initialize LED digital pin as an output.
 	pinMode(LED, OUTPUT);
+	// Serial.begin(115200);
+
+	init_wifi();
 }
 
 void loop()
@@ -28,4 +45,6 @@ void loop()
 
 	// wait for a second
 	delay(1000);
+
+	Serial.print("Loop done");
 }
